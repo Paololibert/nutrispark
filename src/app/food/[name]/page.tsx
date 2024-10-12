@@ -17,37 +17,35 @@ const FoodPage = ({ params }: { params: { name: string } }) => {
 
   const COLORS = ["#F28907", "#5079F2", "#F2220F"];
 
-  const fetchFood = async () => {
-    try {
-      const APIQueryURL = `/api/foods/${params.name}`;
-      const response = await fetch(APIQueryURL);
-      const data = await response.json();
-
-      // Macronutriments
-      const macronutrimentsDatas: IMacronutrientData[] = [
-        { name: "carbohydrates", value: data.carbohydrates },
-        { name: "protein", value: data.protein },
-        { name: "fat", value: data.fat },
-      ];
-
-      setMacronutriments(macronutrimentsDatas);
-
-      // Food General Informations
-      setFood(data);
-      console.log(data);
-    } catch (error) {
-      console.log("Error fetching Food:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ 
 
   useEffect(() => {
-    const initialize = async () => {
-      await fetchFood();
+    const fetchFood = async () => {
+      try {
+        const APIQueryURL = `/api/foods/${params.name}`;
+        const response = await fetch(APIQueryURL);
+        const data = await response.json();
+  
+        // Macronutriments
+        const macronutrimentsDatas: IMacronutrientData[] = [
+          { name: "carbohydrates", value: data.carbohydrates },
+          { name: "protein", value: data.protein },
+          { name: "fat", value: data.fat },
+        ];
+  
+        setMacronutriments(macronutrimentsDatas);
+        setFood(data);
+        console.log(data);
+      } catch (error) {
+        console.log("Error fetching Food:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    initialize();
+  
+    fetchFood();
   }, [params.name]);
+  
 
   return (
     <>

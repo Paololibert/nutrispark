@@ -20,35 +20,13 @@ import {
 } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
-
 export default function Home() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [foods, setFoods] = useState<IFoodReduced[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const fetchFoods = async () => {
     try {
       const response = await fetch("api/foods/all");
@@ -62,6 +40,7 @@ export default function Home() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     const initialize = async () => {
       await fetchFoods();
@@ -74,14 +53,14 @@ export default function Home() {
     if (value.length > 0) {
       router.push(`/food/${value}`);
     }
-  }, [value]);
+  }, [value, router]); // Ajoutez 'router' ici
 
   return (
     <>
       {!isLoading ? (
         <div className="min-h-screen flex flex-col items-center justify-center p-6">
           <h1 className="text-5xl font-extrabold mb-4">welcom to <span className="title_colored">Nutrispark</span> </h1>
-          <p className="text-lg  mb-8 text-center max-w-2xl" >Discover the nutritionales of your favorite foods.</p>
+          <p className="text-lg  mb-8 text-center max-w-2xl">Discover the nutritionales of your favorite foods.</p>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
